@@ -1,0 +1,40 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=5
+
+[application]
+
+config/name="Godot-Lightweight-Template"
+config/features=PackedStringArray("4.6", "Forward Plus")
+config/icon="res://icon.svg"
+
+[autoload]
+
+AppConfig="*uid://cjke6crjg14a0"
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/Godot-Options-Menus/plugin.cfg")
+
+[internationalization]
+
+locale/translations=PackedStringArray("res://addons/Godot-Options-Menus/base/translations/menus_translations.en.translation", "res://addons/Godot-Options-Menus/base/translations/menus_translations.fr.translation")
+
+[maaacks_options_menus]
+
+disable_update_check=false
+disable_install_wizard=true
+
+[physics]
+
+3d/physics_engine="Jolt Physics"
+
+[rendering]
+
+rendering_device/driver.windows="d3d12"

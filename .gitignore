@@ -1,0 +1,18 @@
+# Godot 4+ specific ignores
+.godot/
+/android/
+
+# Template specific ignores
+/Build/
+
+# Probably useless imports
+*.png.import
+*.svg.import
+
+# Blender files
+*.blend1
+
+# IDE Ignores
+.idea/
+.vs/
+.vscode/

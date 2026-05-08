@@ -1,0 +1,6 @@
+[submodule "addons/Godot-Options-Menus"]
+	path = addons/Godot-Options-Menus
+	url = https://github.com/Stellar-Forge-Interactive/Godot-Options-Menus.git
+[submodule "addons/Godot-Credits-Scene"]
+	path = addons/Godot-Credits-Scene
+	url = https://github.com/Stellar-Forge-Interactive/Godot-Credits-Scene.git
