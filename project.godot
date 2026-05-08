@@ -10,13 +10,21 @@ config_version=5
 
 [application]
 
-config/name="Godot-Lightweight-Template"
+config/name="Atlantic Game Jam 2026"
+config/description="A game created for the 2026 edition of Atlantic Game Jam by GM4CF"
 config/features=PackedStringArray("4.6", "Forward Plus")
 config/icon="res://icon.svg"
 
 [autoload]
 
 AppConfig="*uid://cjke6crjg14a0"
+
+[display]
+
+window/size/viewport_width=1920
+window/size/viewport_height=1080
+window/subwindows/embed_subwindows=false
+window/stretch/mode="canvas_items"
 
 [editor_plugins]
 
@@ -28,7 +36,7 @@ locale/translations=PackedStringArray("res://addons/Godot-Options-Menus/base/tra
 
 [maaacks_options_menus]
 
-disable_update_check=false
+disable_update_check=true
 disable_install_wizard=true
 
 [physics]
