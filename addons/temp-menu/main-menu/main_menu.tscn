@@ -1,0 +1,538 @@
+[gd_scene format=3 uid="uid://c6k5nnpbypshi"]
+
+[ext_resource type="Script" uid="uid://bdet8115mn02d" path="res://addons/temp-menu/src/menu/main_menu.gd" id="1_rp3pw"]
+[ext_resource type="Script" uid="uid://bomkpwffkc8fn" path="res://addons/temp-menu/src/util/UIFocusHelper.gd" id="2_rp3pw"]
+
+[sub_resource type="GDScript" id="GDScript_7ww3w"]
+resource_name = "SoundController"
+script/source = "extends Node
+## Controller for managing all UI sounds in a scene from one place.
+##
+## This node manages all of the UI sounds under the provided node path.
+## When attached just below the root node of a scene tree, it will manage
+## all of the UI sounds in that scene.
+
+const MAX_DEPTH = 16
+
+@export var root_path : NodePath = ^\"..\"
+## Audio bus for any audio streams created.
+@export var audio_bus : StringName = &\"SFX\"
+## Continually check any new nodes added to the scene tree.
+@export var persistent : bool = true :
+	set(value):
+		persistent = value
+		_update_persistent_signals()
+
+@export_group(\"Button Sounds\")
+@export var button_hovered : AudioStream
+@export var button_focused : AudioStream
+@export var button_pressed : AudioStream
+
+@export_group(\"TabBar Sounds\")
+@export var tab_hovered : AudioStream
+@export var tab_changed : AudioStream
+@export var tab_selected : AudioStream
+
+@export_group(\"Slider Sounds\")
+@export var slider_hovered : AudioStream
+@export var slider_focused : AudioStream
+@export var slider_drag_started : AudioStream
+@export var slider_drag_ended : AudioStream
+
+@export_group(\"LineEdit Sounds\")
+@export var line_hovered : AudioStream
+@export var line_focused : AudioStream
+@export var line_text_changed : AudioStream
+@export var line_text_submitted : AudioStream
+@export var line_text_change_rejected : AudioStream
+
+@export_group(\"ItemList Sounds\")
+@export var item_list_selected : AudioStream
+@export var item_list_activated : AudioStream
+
+@export_group(\"Tree Sounds\")
+@export var tree_item_selected : AudioStream
+@export var tree_item_activated : AudioStream
+@export var tree_button_clicked : AudioStream
+
+@onready var root_node : Node = get_node(root_path)
+
+var button_hovered_player : AudioStreamPlayer
+var button_focused_player : AudioStreamPlayer
+var button_pressed_player : AudioStreamPlayer
+
+var tab_hovered_player : AudioStreamPlayer
+var tab_changed_player : AudioStreamPlayer
+var tab_selected_player : AudioStreamPlayer
+
+var slider_hovered_player : AudioStreamPlayer
+var slider_focused_player : AudioStreamPlayer
+var slider_drag_started_player : AudioStreamPlayer
+var slider_drag_ended_player : AudioStreamPlayer
+
+var line_hovered_player : AudioStreamPlayer
+var line_focused_player : AudioStreamPlayer
+var line_text_changed_player : AudioStreamPlayer
+var line_text_submitted_player : AudioStreamPlayer
+var line_text_change_rejected_player : AudioStreamPlayer
+
+var item_list_activated_player : AudioStreamPlayer
+var item_list_selected_player : AudioStreamPlayer
+
+var tree_item_activated_player : AudioStreamPlayer
+var tree_item_selected_player : AudioStreamPlayer
+var tree_button_clicked_player : AudioStreamPlayer
+
+func _update_persistent_signals() -> void:
+	if not is_inside_tree():
+		return
+	var tree_node = get_tree()
+	if persistent:
+		if not tree_node.node_added.is_connected(connect_ui_sounds):
+			tree_node.node_added.connect(connect_ui_sounds)
+	else:
+		if tree_node.node_added.is_connected(connect_ui_sounds):
+			tree_node.node_added.disconnect(connect_ui_sounds)
+
+func _build_stream_player(stream : AudioStream, stream_name : String = \"\") -> AudioStreamPlayer:
+	var stream_player : AudioStreamPlayer
+	if stream != null:
+		stream_player = AudioStreamPlayer.new()
+		stream_player.stream = stream
+		stream_player.bus = audio_bus
+		stream_player.name = stream_name + \"AudioStreamPlayer\"
+		add_child(stream_player)
+	return stream_player
+
+func _build_button_stream_players() -> void:
+	button_hovered_player = _build_stream_player(button_hovered, \"ButtonHovered\")
+	button_focused_player = _build_stream_player(button_focused, \"ButtonFocused\")
+	button_pressed_player = _build_stream_player(button_pressed, \"ButtonClicked\")
+
+func _build_tab_stream_players() -> void:
+	tab_hovered_player = _build_stream_player(tab_hovered, \"TabHovered\")
+	tab_changed_player = _build_stream_player(tab_changed, \"TabChanged\")
+	tab_selected_player = _build_stream_player(tab_selected, \"TabSelected\")
+
+func _build_slider_stream_players() -> void:
+	slider_hovered_player = _build_stream_player(slider_hovered, \"SliderHovered\")
+	slider_focused_player = _build_stream_player(slider_focused, \"SliderFocused\")
+	slider_drag_started_player = _build_stream_player(slider_drag_started, \"SliderDragStarted\")
+	slider_drag_ended_player = _build_stream_player(slider_drag_ended, \"SliderDragEnded\")
+
+func _build_line_stream_players() -> void:
+	line_hovered_player = _build_stream_player(line_hovered, \"LineHovered\")
+	line_focused_player = _build_stream_player(line_focused, \"LineFocused\")
+	line_text_changed_player = _build_stream_player(line_text_changed, \"LineTextChanged\")
+	line_text_submitted_player = _build_stream_player(line_text_submitted, \"LineTextSubmitted\")
+	line_text_change_rejected_player = _build_stream_player(line_text_change_rejected, \"LineTextChangeRejected\")
+
+func _build_item_list_stream_players() -> void:
+	item_list_activated_player = _build_stream_player(item_list_activated, \"ItemActivated\")
+	item_list_selected_player = _build_stream_player(item_list_selected, \"ItemSelected\")
+
+func _build_tree_stream_players() -> void:
+	tree_item_activated_player = _build_stream_player(tree_item_activated, \"TreeItemActivated\")
+	tree_item_selected_player = _build_stream_player(tree_item_selected, \"TreeItemSelected\")
+	tree_button_clicked_player = _build_stream_player(tree_button_clicked, \"TreeButtonClicked\")
+
+func _build_all_stream_players() -> void:
+	_build_button_stream_players()
+	_build_tab_stream_players()
+	_build_slider_stream_players()
+	_build_line_stream_players()
+	_build_item_list_stream_players()
+	_build_tree_stream_players()
+
+func _play_stream(stream_player : AudioStreamPlayer) -> void:
+	if not stream_player.is_inside_tree():
+		return
+	stream_player.play()
+
+func _tab_event_play_stream(_tab_idx : int, stream_player : AudioStreamPlayer) -> void:
+	_play_stream(stream_player)
+
+func _slider_drag_ended_play_stream(_value_changed : bool, stream_player : AudioStreamPlayer) -> void:
+	_play_stream(stream_player)
+
+func _line_event_play_stream(_new_text : String, stream_player : AudioStreamPlayer) -> void:
+	_play_stream(stream_player)
+
+func _item_list_play_stream(_index : int, stream_player : AudioStreamPlayer) -> void:
+	_play_stream(stream_player)
+
+func _tree_button_clicked_play_stream(_tree_item : TreeItem, _column : int, _id : int, _mouse_button_index : int, stream_player : AudioStreamPlayer) -> void:
+	_play_stream(stream_player)
+
+func _connect_stream_player(node : Node, stream_player : AudioStreamPlayer, signal_name : StringName, callable : Callable) -> void:
+	if stream_player != null and not node.is_connected(signal_name, callable.bind(stream_player)):
+		node.connect(signal_name, callable.bind(stream_player))
+
+func connect_ui_sounds(node: Node) -> void:
+	if node is Button:
+		_connect_stream_player(node, button_hovered_player, &\"mouse_entered\", _play_stream)
+		_connect_stream_player(node, button_focused_player, &\"focus_entered\", _play_stream)
+		_connect_stream_player(node, button_pressed_player, &\"pressed\", _play_stream)
+	elif node is TabBar:
+		_connect_stream_player(node, tab_hovered_player, &\"tab_hovered\", _tab_event_play_stream)
+		_connect_stream_player(node, tab_changed_player, &\"tab_changed\", _tab_event_play_stream)
+		_connect_stream_player(node, tab_selected_player, &\"tab_selected\", _tab_event_play_stream)
+	elif node is Slider:
+		_connect_stream_player(node, slider_hovered_player, &\"mouse_entered\", _play_stream)
+		_connect_stream_player(node, slider_focused_player, &\"focus_entered\", _play_stream)
+		_connect_stream_player(node, slider_drag_started_player, &\"drag_started\", _play_stream)
+		_connect_stream_player(node, slider_drag_ended_player, &\"drag_ended\", _slider_drag_ended_play_stream)
+	elif node is LineEdit:
+		_connect_stream_player(node, line_hovered_player, &\"mouse_entered\", _play_stream)
+		_connect_stream_player(node, line_focused_player, &\"focus_entered\", _play_stream)
+		_connect_stream_player(node, line_text_changed_player, &\"text_changed\", _line_event_play_stream)
+		_connect_stream_player(node, line_text_submitted_player, &\"text_submitted\", _line_event_play_stream)
+		_connect_stream_player(node, line_text_change_rejected_player, &\"text_change_rejected\", _line_event_play_stream)
+	elif node is ItemList:
+		_connect_stream_player(node, item_list_activated_player, &\"item_activated\", _item_list_play_stream)
+		_connect_stream_player(node, item_list_selected_player, &\"item_selected\", _item_list_play_stream)
+	elif node is Tree:
+		_connect_stream_player(node, tree_item_activated_player, &\"item_activated\", _play_stream)
+		_connect_stream_player(node, tree_item_selected_player, &\"item_selected\", _play_stream)
+		_connect_stream_player(node, tree_button_clicked_player, &\"button_clicked\", _tree_button_clicked_play_stream)
+
+func _recursive_connect_ui_sounds(current_node: Node, current_depth : int = 0) -> void:
+	if current_depth >= MAX_DEPTH:
+		return
+	for node in current_node.get_children():
+		connect_ui_sounds(node)
+		_recursive_connect_ui_sounds(node, current_depth + 1)
+
+func _ready() -> void:
+	_build_all_stream_players()
+	_recursive_connect_ui_sounds(root_node)
+	persistent = persistent
+
+func _exit_tree() -> void:
+	var tree_node = get_tree()
+	if tree_node.node_added.is_connected(connect_ui_sounds):
+		tree_node.node_added.disconnect(connect_ui_sounds)
+"
+
+[sub_resource type="GDScript" id="GDScript_bd0g4"]
+resource_name = "TitleLabel"
+script/source = "@tool
+extends Label
+## Displays the value of `application/config/name`, set in project settings.
+
+const NO_NAME_STRING : String = \"Title\"
+
+## If true, update the title when ready.
+@export var auto_update : bool = true
+
+func update_name_label():
+	var config_name : String = ProjectSettings.get_setting(\"application/config/name\", NO_NAME_STRING)
+	if config_name.is_empty():
+		config_name = NO_NAME_STRING
+	text = config_name
+
+func _ready():
+	if auto_update:
+		update_name_label()
+"
+
+[sub_resource type="GDScript" id="GDScript_uae7o"]
+resource_name = "VersionLabel"
+script/source = "@tool
+extends Label
+## Displays the value of `application/config/version`, set in project settings.
+
+const NO_VERSION_STRING : String = \"0.0.0\"
+
+## Prefixes the value of `application/config/version` when displaying to the user.
+@export var version_prefix : String = \"v\"
+
+func update_version_label() -> void:
+	var config_version : String = ProjectSettings.get_setting(\"application/config/version\", NO_VERSION_STRING)
+	if config_version.is_empty():
+		config_version = NO_VERSION_STRING
+	text = version_prefix + config_version
+
+func _ready() -> void:
+	update_version_label()
+"
+
+[sub_resource type="GDScript" id="GDScript_kpoeg"]
+resource_name = "ExitConfirm"
+script/source = "@tool
+extends OverlaidWindow
+
+signal confirmed
+
+@onready var confirm_button : Button = %ConfirmButton
+
+@export var confirm_button_text : String = \"Confirm\" :
+	set(value):
+		confirm_button_text = value
+		if update_content and is_inside_tree():
+			confirm_button.text = confirm_button_text
+
+func confirm():
+	confirmed.emit()
+	close()
+
+func _on_confirm_button_pressed():
+	confirm()
+"
+
+[node name="MainMenu" type="Control" unique_id=781937481]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_rp3pw")
+
+[node name="UISoundController" type="Node" parent="." unique_id=1619985599]
+script = SubResource("GDScript_7ww3w")
+
+[node name="BackgroundMusicPlayer" type="AudioStreamPlayer" parent="." unique_id=1141822549]
+process_mode = 3
+autoplay = true
+
+[node name="BackgroundTextureRect" type="TextureRect" parent="." unique_id=1940176448]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="MenuContainer" type="MarginContainer" parent="." unique_id=396616752]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TitleMargin" type="MarginContainer" parent="MenuContainer" unique_id=2112060331]
+layout_mode = 2
+theme_override_constants/margin_top = 24
+
+[node name="TitleContainer" type="Control" parent="MenuContainer/TitleMargin" unique_id=556427956]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="TitleLabel" type="Label" parent="MenuContainer/TitleMargin/TitleContainer" unique_id=359406872]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 67.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 48
+text = "Atlantic Game Jam 2026"
+horizontal_alignment = 1
+vertical_alignment = 1
+script = SubResource("GDScript_bd0g4")
+
+[node name="SubTitleMargin" type="MarginContainer" parent="MenuContainer" unique_id=1510335937]
+layout_mode = 2
+theme_override_constants/margin_top = 92
+
+[node name="SubTitleContainer" type="Control" parent="MenuContainer/SubTitleMargin" unique_id=930520368]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="SubTitleLabel" type="Label" parent="MenuContainer/SubTitleMargin/SubTitleContainer" unique_id=1037003361]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 34.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 24
+text = "Subtitle"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MenuButtonsMargin" type="MarginContainer" parent="MenuContainer" unique_id=210553886]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_top = 136
+theme_override_constants/margin_bottom = 8
+
+[node name="MenuButtonsContainer" type="Control" parent="MenuContainer/MenuButtonsMargin" unique_id=116448484]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="MenuButtonsBoxContainer" type="BoxContainer" parent="MenuContainer/MenuButtonsMargin/MenuButtonsContainer" unique_id=2017477786]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -64.0
+offset_top = -104.0
+offset_right = 64.0
+offset_bottom = 104.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+theme_override_constants/separation = 16
+alignment = 1
+vertical = true
+script = ExtResource("2_rp3pw")
+
+[node name="NewGameButton" type="Button" parent="MenuContainer/MenuButtonsMargin/MenuButtonsContainer/MenuButtonsBoxContainer" unique_id=2044537792]
+unique_name_in_owner = true
+layout_mode = 2
+text = "New Game"
+
+[node name="OptionsButton" type="Button" parent="MenuContainer/MenuButtonsMargin/MenuButtonsContainer/MenuButtonsBoxContainer" unique_id=1486236076]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Options"
+
+[node name="CreditsButton" type="Button" parent="MenuContainer/MenuButtonsMargin/MenuButtonsContainer/MenuButtonsBoxContainer" unique_id=301223169]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Credits"
+
+[node name="ExitButton" type="Button" parent="MenuContainer/MenuButtonsMargin/MenuButtonsContainer/MenuButtonsBoxContainer" unique_id=1750454379]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Exit"
+
+[node name="VersionMargin" type="MarginContainer" parent="." unique_id=1732528471]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="VersionContainer" type="Control" parent="VersionMargin" unique_id=1603969262]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="VersionLabel" type="Label" parent="VersionMargin/VersionContainer" unique_id=793266470]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -88.0
+offset_top = -26.0
+grow_horizontal = 0
+grow_vertical = 0
+text = "v0.0.0"
+horizontal_alignment = 2
+script = SubResource("GDScript_uae7o")
+
+[node name="ExitConfirmation" type="PanelContainer" parent="." unique_id=912502155]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(300, 160)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -150.0
+offset_top = -80.0
+offset_right = 150.0
+offset_bottom = 80.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+script = SubResource("GDScript_kpoeg")
+
+[node name="ContentContainer" type="MarginContainer" parent="ExitConfirmation" unique_id=1755486830]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="BoxContainer" type="BoxContainer" parent="ExitConfirmation/ContentContainer" unique_id=394030069]
+layout_mode = 2
+vertical = true
+
+[node name="TitleMargin" type="MarginContainer" parent="ExitConfirmation/ContentContainer/BoxContainer" unique_id=1262022916]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+theme_override_constants/margin_left = -14
+theme_override_constants/margin_top = -14
+theme_override_constants/margin_right = -14
+theme_override_constants/margin_bottom = 8
+
+[node name="BoxContainer" type="BoxContainer" parent="ExitConfirmation/ContentContainer/BoxContainer/TitleMargin" unique_id=1788474031]
+layout_mode = 2
+theme_override_constants/separation = 0
+vertical = true
+
+[node name="TitleLabel" type="Label" parent="ExitConfirmation/ContentContainer/BoxContainer/TitleMargin/BoxContainer" unique_id=1049966061]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "Menu"
+horizontal_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="ExitConfirmation/ContentContainer/BoxContainer/TitleMargin/BoxContainer" unique_id=33373596]
+layout_mode = 2
+
+[node name="BodyMargin" type="MarginContainer" parent="ExitConfirmation/ContentContainer/BoxContainer" unique_id=590613964]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="DescriptionLabel" type="RichTextLabel" parent="ExitConfirmation/ContentContainer/BoxContainer/BodyMargin" unique_id=617407155]
+unique_name_in_owner = true
+layout_mode = 2
+bbcode_enabled = true
+text = "Really exit the game?"
+fit_content = true
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MenuButtonsMargin" type="MarginContainer" parent="ExitConfirmation/ContentContainer/BoxContainer" unique_id=1413292752]
+layout_mode = 2
+theme_override_constants/margin_top = 8
+
+[node name="MenuButtons" type="BoxContainer" parent="ExitConfirmation/ContentContainer/BoxContainer/MenuButtonsMargin" unique_id=1371114575]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(128, 0)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 16
+alignment = 1
+script = ExtResource("2_rp3pw")
+
+[node name="CloseButton" type="Button" parent="ExitConfirmation/ContentContainer/BoxContainer/MenuButtonsMargin/MenuButtons" unique_id=314526102]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Cancel"
+
+[node name="ConfirmButton" type="Button" parent="ExitConfirmation/ContentContainer/BoxContainer/MenuButtonsMargin/MenuButtons" unique_id=1052970550]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Confirm"
+
+[connection signal="pressed" from="MenuContainer/MenuButtonsMargin/MenuButtonsContainer/MenuButtonsBoxContainer/NewGameButton" to="." method="_on_new_game_button_pressed"]
+[connection signal="pressed" from="MenuContainer/MenuButtonsMargin/MenuButtonsContainer/MenuButtonsBoxContainer/OptionsButton" to="." method="_on_options_button_pressed"]
+[connection signal="pressed" from="MenuContainer/MenuButtonsMargin/MenuButtonsContainer/MenuButtonsBoxContainer/CreditsButton" to="." method="_on_credits_button_pressed"]
+[connection signal="pressed" from="MenuContainer/MenuButtonsMargin/MenuButtonsContainer/MenuButtonsBoxContainer/ExitButton" to="." method="_on_exit_button_pressed"]
+[connection signal="confirmed" from="ExitConfirmation" to="." method="_on_exit_confirmation_confirmed"]
+[connection signal="pressed" from="ExitConfirmation/ContentContainer/BoxContainer/MenuButtonsMargin/MenuButtons/CloseButton" to="ExitConfirmation" method="_on_close_button_pressed"]
+[connection signal="pressed" from="ExitConfirmation/ContentContainer/BoxContainer/MenuButtonsMargin/MenuButtons/ConfirmButton" to="ExitConfirmation" method="_on_confirm_button_pressed"]

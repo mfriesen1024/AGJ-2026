@@ -1,0 +1,7 @@
+[gd_scene format=3 uid="uid://dkru2osigfcfa"]
+
+[ext_resource type="PackedScene" uid="uid://dp5yv6ppwkqet" path="res://Assets/Scenes/tmp/Temp.tscn" id="1_qcdep"]
+
+[node name="GameplayMain" type="Node" unique_id=189919240]
+
+[node name="Temp" parent="." unique_id=378389813 instance=ExtResource("1_qcdep")]
