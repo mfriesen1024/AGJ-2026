@@ -1,7 +1,21 @@
 [gd_scene format=3 uid="uid://dkru2osigfcfa"]
 
-[ext_resource type="PackedScene" uid="uid://dp5yv6ppwkqet" path="res://Assets/Scenes/tmp/Temp.tscn" id="1_qcdep"]
+[ext_resource type="PackedScene" uid="uid://bs7611heblixy" path="res://Assets/Scenes/BaseLevel.tscn" id="2_ms7gg"]
+[ext_resource type="PackedScene" uid="uid://dgr4hikovt3tx" path="res://Assets/Scenes/player.tscn" id="2_q46om"]
+[ext_resource type="Script" uid="uid://dgojlwpun3qfy" path="res://Assets/Scripts/camera.gd" id="2_tyis1"]
 
 [node name="GameplayMain" type="Node" unique_id=189919240]
 
-[node name="Temp" parent="." unique_id=378389813 instance=ExtResource("1_qcdep")]
+[node name="BaseLevel" parent="." unique_id=1734937534 instance=ExtResource("2_ms7gg")]
+
+[node name="View" type="Node3D" parent="." unique_id=1663941511 node_paths=PackedStringArray("target")]
+transform = Transform3D(1, 0, 0, 0, 0.70710677, 0.70710677, 0, -0.70710677, 0.70710677, 0, 0, 0)
+script = ExtResource("2_tyis1")
+target = NodePath("../Player")
+
+[node name="Camera" type="Camera3D" parent="View" unique_id=452175451]
+projection = 1
+size = 10.0
+
+[node name="Player" parent="." unique_id=142444681 instance=ExtResource("2_q46om")]
+transform = Transform3D(0.70710677, 0, 0.70710677, 0, 1, 0, -0.70710677, 0, 0.70710677, -0.14022636, 1.7327207, 0)

@@ -4,8 +4,6 @@
 
 [node name="Temp" type="Node3D" unique_id=378389813]
 
-[node name="Camera3D" type="Camera3D" parent="." unique_id=566688848]
-
 [node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1465824347]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5283102, -2.9455974)
 mesh = SubResource("CapsuleMesh_jv7mu")

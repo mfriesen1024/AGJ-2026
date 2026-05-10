@@ -1,0 +1,18 @@
+[gd_scene format=3 uid="uid://oockislui1dc"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_0808a"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_mgy0b"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bb8tc"]
+albedo_color = Color(1, 0, 1, 1)
+
+[node name="Character" type="Node3D" unique_id=1931309072]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=2045570407]
+mesh = SubResource("CapsuleMesh_0808a")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="." unique_id=679788504]
+transform = Transform3D(0.4999288, 0, -0.008438259, 0, 0.25, 0, 0.008438259, 0, 0.4999288, 0.048490882, 0.469746, 0.38172543)
+mesh = SubResource("BoxMesh_mgy0b")
+surface_material_override/0 = SubResource("StandardMaterial3D_bb8tc")
