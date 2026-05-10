@@ -1,7 +1,22 @@
 extends CharacterBody3D
 
+class Spirit:
+	var name: String
+	var horizontal_accel: float
+	var horizontal_vel: float
+	var max_horizontal_vel: float
+	var vertical_accel: float
+	var max_vertical_vel: float
+	
+	func _init(name_, hrz_accel_, hrz_vel_, max_hrz_vel_, vrt_accl_, max_vrt_vel_):
+		name = name_
+		horizontal_accel = hrz_accel_
+		horizontal_vel = hrz_vel_	
+		max_horizontal_vel = max_hrz_vel_
+		vertical_accel = vrt_accl_
+		max_vertical_vel = max_vrt_vel_
 
-enum spirit_type { BOUNCY, WINDY, COUNT }
+
 
 @export var movement_speed = 250
 @export var jump_strength = 10
@@ -10,14 +25,20 @@ var movement_velocity: Vector3
 var rotation_direction: float
 var can_jump = true
 
+var cur_spirit_index: int 
 
-var max_vel: float = 200 #TODO
-var horizontal_accel: float = 10
-var gravity_accel: float = -9.81
-
+var spirits: Array[Spirit]
 
 
-var current_spirit: spirit_type = spirit_type.BOUNCY
+func _ready():
+	var s1 = Spirit.new("Bouncy", 200, 0, 2000, 5, 100)
+	var s2 = Spirit.new("Windy", 0, 2, 200, 5, 80)
+	spirits.push_back(s1)
+	spirits.push_back(s2)
+	
+	cur_spirit_index = 0
+
+
 
 
 func _physics_process(delta):
@@ -59,7 +80,11 @@ func handle_controls(delta):
 	if input.length() > 1:
 		input = input.normalized()
 
+	handle_horizontal_vel(delta, input)
 	handle_horizontal_accel(delta, input)
+	
+	
+	
 	# Jumping
 
 	if Input.is_action_just_pressed("jump"):
@@ -83,17 +108,26 @@ func jump():
 	if can_jump:
 		can_jump = false;
 		
+		
+		
+func handle_horizontal_vel(delta, input, has_max_speed = true): 
+	if(spirits[cur_spirit_index].horizontal_vel == 0): return
+	movement_velocity = input * spirits[cur_spirit_index].horizontal_vel
+	
+	
 func handle_horizontal_accel(delta, input):
-	movement_velocity = velocity + (horizontal_accel * input * delta)
-	pass
+	if(spirits[cur_spirit_index].horizontal_accel == 0): return
+	movement_velocity = velocity + (spirits[cur_spirit_index].horizontal_accel * input * delta)
 	
-func handle_horizontal_vel(delta, input, has_max_speed = true):
-	movement_velocity = input * movement_speed * delta
-
-	pass
 	
+	
+	
+func slow_accel(delta):
+	pass
+		
 func handle_vertical_accel(delta, grav_accel):
 	pass
+	
 
 
 
@@ -112,9 +146,9 @@ func handle_vertical_accel(delta, grav_accel):
 
 
 func switch_spirit():
-	if(current_spirit + 1 >= spirit_type.COUNT):
+	if(cur_spirit_index + 1 >= spirits.size()):
 		# out of bounds, loop to start
-		current_spirit = 0
+		cur_spirit_index = 0
 	else:
-		current_spirit += 1
-	print("switched to " + str(current_spirit))
+		cur_spirit_index += 1
+	print("switched to " + spirits[cur_spirit_index].name)
