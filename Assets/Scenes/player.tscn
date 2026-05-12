@@ -25,3 +25,18 @@ shape = SubResource("CapsuleShape3D_7dd06")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.9, 0)
 size = Vector3(1, 2, 1)
 texture_albedo = SubResource("GradientTexture2D_t1xgp")
+
+[node name="dash_timer" type="Timer" parent="." unique_id=1025442486]
+wait_time = 0.1
+
+[node name="dash_cooldown" type="Timer" parent="." unique_id=41458427]
+
+[node name="bounce_timer" type="Timer" parent="." unique_id=166941567]
+wait_time = 0.2
+
+[node name="bounce_cooldown" type="Timer" parent="." unique_id=414171299]
+
+[connection signal="timeout" from="dash_timer" to="." method="_on_dash_timer_timeout"]
+[connection signal="timeout" from="dash_cooldown" to="." method="_on_dash_cooldown_timeout"]
+[connection signal="timeout" from="bounce_timer" to="." method="_on_bounce_timer_timeout"]
+[connection signal="timeout" from="bounce_cooldown" to="." method="_on_bounce_cooldown_timeout"]

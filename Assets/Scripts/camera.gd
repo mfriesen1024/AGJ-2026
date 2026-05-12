@@ -15,7 +15,7 @@ func _physics_process(delta):
 	if not target:
 		return
 	
-	self.position = self.position.lerp(target.position, delta * 4)
+	self.position = self.position.lerp(target.position, delta * 10)
 	
 	camera.position = camera.position.lerp(Vector3(0, 0, 4), 8 * delta)
 	
