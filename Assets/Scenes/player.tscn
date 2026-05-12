@@ -2,16 +2,10 @@
 
 [ext_resource type="PackedScene" uid="uid://oockislui1dc" path="res://Assets/Scenes/character.tscn" id="1_6cd4h"]
 [ext_resource type="Script" uid="uid://cfglg02ao4bkg" path="res://Assets/Scripts/player.gd" id="1_7dd06"]
+[ext_resource type="Script" uid="uid://bd857hnkifln1" path="res://Assets/Scripts/player_shadow.gd" id="3_38rej"]
+[ext_resource type="Texture2D" uid="uid://cvx1uh45ct1ss" path="res://icon.svg" id="4_t1xgp"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_7dd06"]
-
-[sub_resource type="Gradient" id="Gradient_38rej"]
-colors = PackedColorArray(0, 0, 0, 1, 1, 1, 1, 0)
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_t1xgp"]
-gradient = SubResource("Gradient_38rej")
-fill = 1
-fill_from = Vector2(0.48623854, 0.47706422)
 
 [node name="Player" type="CharacterBody3D" unique_id=142444681]
 script = ExtResource("1_7dd06")
@@ -21,10 +15,7 @@ shape = SubResource("CapsuleShape3D_7dd06")
 
 [node name="Character" parent="." unique_id=1931309072 instance=ExtResource("1_6cd4h")]
 
-[node name="Decal" type="Decal" parent="." unique_id=908759748]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.9, 0)
-size = Vector3(1, 2, 1)
-texture_albedo = SubResource("GradientTexture2D_t1xgp")
+[node name="spirit_swap_cooldown" type="Timer" parent="." unique_id=1632662656]
 
 [node name="dash_timer" type="Timer" parent="." unique_id=1025442486]
 wait_time = 0.1
@@ -32,10 +23,28 @@ wait_time = 0.1
 [node name="dash_cooldown" type="Timer" parent="." unique_id=41458427]
 
 [node name="bounce_timer" type="Timer" parent="." unique_id=166941567]
-wait_time = 0.2
 
 [node name="bounce_cooldown" type="Timer" parent="." unique_id=414171299]
 
+[node name="PlayerShadow" type="Node3D" parent="." unique_id=1783877164]
+script = ExtResource("3_38rej")
+
+[node name="Shadow" type="Decal" parent="PlayerShadow" unique_id=908759748]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.1490502, 0)
+size = Vector3(1, 0.39723206, 1)
+texture_albedo = ExtResource("4_t1xgp")
+upper_fade = 1e-05
+lower_fade = 1e-05
+cull_mask = 1048574
+
+[node name="ShadowRay" type="RayCast3D" parent="PlayerShadow" unique_id=1352420714]
+target_position = Vector3(0, 0, 0)
+collision_mask = 15
+collide_with_areas = true
+debug_shape_custom_color = Color(0.30980393, 1, 0.18039216, 1)
+debug_shape_thickness = 5
+
+[connection signal="timeout" from="spirit_swap_cooldown" to="." method="_on_spirit_swap_cooldown_timeout"]
 [connection signal="timeout" from="dash_timer" to="." method="_on_dash_timer_timeout"]
 [connection signal="timeout" from="dash_cooldown" to="." method="_on_dash_cooldown_timeout"]
 [connection signal="timeout" from="bounce_timer" to="." method="_on_bounce_timer_timeout"]

@@ -5,11 +5,6 @@ extends Node3D
 
 @onready var camera = $Camera
 
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	pass # Replace with function body.
-
-
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(delta):
 	if not target:
@@ -17,5 +12,4 @@ func _physics_process(delta):
 	
 	self.position = self.position.lerp(target.position, delta * 10)
 	
-	camera.position = camera.position.lerp(Vector3(0, 0, 4), 8 * delta)
-	
+	camera.position = camera.position.lerp(Vector3(0, 0, 6), 10 * delta)

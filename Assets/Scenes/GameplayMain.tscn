@@ -18,4 +18,4 @@ projection = 1
 size = 10.0
 
 [node name="Player" parent="." unique_id=142444681 instance=ExtResource("2_q46om")]
-transform = Transform3D(0.70710677, 0, 0.70710677, 0, 1, 0, -0.70710677, 0, 0.70710677, -0.14022636, 1.7327207, 0)
+transform = Transform3D(0.70710677, 0, 0.70710677, 0, 1, 0, -0.70710677, 0, 0.70710677, 0.64349186, 1.7327207, -2.1565633)
