@@ -18,7 +18,6 @@ var is_bouncing: bool = false
 var is_falling: bool = false
 
 var is_bouncy: bool = true
-var vel_last_tick:Vector3 
 
 # bouncy variables
 const BOUNCY_ACCEL = 30
@@ -30,11 +29,28 @@ func _physics_process(delta):
 	handle_controls(delta)
 	handle_gravity(delta)
 	
-	# Rotation
 
+	if(is_bouncing && is_bouncy): # for the brief bouncing window, we track collision
+		movement_velocity.y = -gravity
+		var collision: KinematicCollision3D = move_and_collide(movement_velocity * delta)
+		if(!collision):
+			return
+		
+		is_bouncing = false
+		velocity = movement_velocity.bounce(collision.get_normal())
+		if(collision.get_normal().y != 0):
+			# this is super jank, largely untested but it works for now TODO
+			# basically if its not completely vertical switch gravity
+			gravity = -gravity
+		print("collided")
+		return
+		
+	# if not bouncing, continue with regular sliding movement for ease of use
+	
+	# Rotation
 	if Vector2(velocity.z, velocity.x).length() > 0:
 		rotation_direction = Vector2(velocity.z, velocity.x).angle()
-
+	
 	rotation.y = lerp_angle(rotation.y, rotation_direction, delta * 10)
 		
 	var applied_velocity: Vector3
@@ -45,7 +61,9 @@ func _physics_process(delta):
 	velocity = applied_velocity
 
 	move_and_slide()
-	vel_last_tick = velocity
+	
+	
+	
 
 func handle_controls(delta):
 	
@@ -113,16 +131,7 @@ func handle_bouncy_movement(delta, input):
 	else:  # accel
 		movement_velocity = velocity
 		movement_velocity += (BOUNCY_ACCEL * input * delta)
-		
-	var collision = get_last_slide_collision()
-	if(collision):
-		
-		# TODO figure out how to do bounces (possibly with move_and_collide())
-		# the issue I was having is that when you check the velocity at the same tick the collision happens, 
-		# it is giving me (i think) the velocity after it collides and zeros out which doesn't help if you want to bounce it
-			
-		var bounced_vel = velocity.bounce(collision.get_normal())
-		print("remainder vel: " + str(collision.get_remainder()) + ", bounced vel: " + str(bounced_vel))
+	
 
 	
 	
@@ -140,12 +149,16 @@ func handle_windy_movement(delta, input):
 
 	else:
 		movement_velocity = WINDY_MAX_VEL * input
+		
+		
+	
 
 func use_skill():
 	if(is_bouncy && can_bounce):
 		is_bouncing = true
 		can_bounce = false
 		$bounce_timer.start()
+		$bounce_cooldown.start()
 		print("Skill use Bounce")
 	elif(can_dash):
 		is_dashing = true
