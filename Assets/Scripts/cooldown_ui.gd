@@ -1,7 +1,7 @@
 extends MarginContainer
 
-@onready var animation: AnimationPlayer = $Panel/AnimationPlayer
-@onready var progBar: TextureProgressBar = $Panel/CooldownTimer
+@onready var animation: AnimationPlayer = $Box/AnimationPlayer
+@onready var progBar: TextureProgressBar = $Box/CooldownTimer
 @export var animationName = ""
 @export var signalName = ""
 @export var fillRadial: bool
@@ -9,7 +9,7 @@ extends MarginContainer
 
 func _ready():
 	SignalBus.connect(signalName, _displayTimer)
-	$Panel/Label.text = labelName
+	$Box/Label.text = labelName
 	if(fillRadial):
 		progBar.set_fill_mode(4)
 	else:
