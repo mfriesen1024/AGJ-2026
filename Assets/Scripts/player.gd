@@ -55,7 +55,9 @@ func _physics_process(delta):
 		rotation_direction = Vector2(velocity.z, velocity.x).angle()
 	
 	rotation.y = lerp_angle(rotation.y, rotation_direction, delta * 10)
-		
+	var dirVec: Vector3 = Vector3.BACK.rotated(Vector3.UP, rotation.y)
+	print(rotation, dirVec)
+
 	var applied_velocity: Vector3
 
 	applied_velocity = velocity.lerp(movement_velocity, delta * 10)
@@ -76,11 +78,14 @@ func handle_controls(delta):
 	
 	# Dash Direction
 	
-	dashTargetDir = Vector3(input.x * DASH_SPEED,0, input.z * DASH_SPEED);
 	
 	if Vector2(velocity.z, velocity.x).length() > 0:
 		rotation_direction = Vector2(velocity.z, velocity.x).angle()
 
+	
+	dashTargetDir = Vector3.BACK.rotated(Vector3.UP, rotation.y)
+	
+	
 	if input.length() > 1:
 		input = input.normalized()
 
@@ -139,7 +144,7 @@ func handle_windy_movement(delta, input):
 	# Movement while Zoomy spirit is active
 	
 	if(is_dashing):
-		movement_velocity = movement_velocity.lerp(dashTargetDir, delta * 10)
+		movement_velocity = movement_velocity.lerp(dashTargetDir * DASH_SPEED, delta * 10)
 	elif(velocity.length() > WINDY_MAX_VEL): # over max windy speed: decel
 		movement_velocity = movement_velocity.lerp(Vector3.ZERO, delta * 10)
 	elif(input.length() <= 0 && movement_velocity.length() > 0): # decel, no input
