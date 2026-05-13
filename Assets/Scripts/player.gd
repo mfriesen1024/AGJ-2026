@@ -55,8 +55,6 @@ func _physics_process(delta):
 		rotation_direction = Vector2(velocity.z, velocity.x).angle()
 	
 	rotation.y = lerp_angle(rotation.y, rotation_direction, delta * 10)
-	var dirVec: Vector3 = Vector3.BACK.rotated(Vector3.UP, rotation.y)
-	print(rotation, dirVec)
 
 	var applied_velocity: Vector3
 
@@ -77,12 +75,8 @@ func handle_controls(delta):
 	input.z = Input.get_axis("move_forward", "move_back")
 	
 	# Dash Direction
-	
-	
 	if Vector2(velocity.z, velocity.x).length() > 0:
 		rotation_direction = Vector2(velocity.z, velocity.x).angle()
-
-	
 	dashTargetDir = Vector3.BACK.rotated(Vector3.UP, rotation.y)
 	
 	
