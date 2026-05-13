@@ -41,11 +41,8 @@ func _physics_process(delta):
 			return
 		
 		velocity = movement_velocity.bounce(collision.get_normal())
+		movement_velocity = velocity
 		if(collision.get_normal().y != 0):
-			# this is super jank, largely untested but it works for now TODO
-			# basically if its not completely vertical switch gravity.
-			# some issues i spotted with a nearly horizontal surface, launches correctly but after 
-			# a second it kinda stops
 			gravity = -gravity * 1.5
 		print("collided")
 		is_bouncing = false
