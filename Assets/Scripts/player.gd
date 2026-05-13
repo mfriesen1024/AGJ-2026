@@ -24,6 +24,9 @@ var dashTargetDir: Vector3
 var can_dash: bool = false
 var is_dashing: bool = false
 
+#func _on_ready():
+	#PlayerVariables.skill_swap_path = spirit_swap_timer.get_path()
+
 func _physics_process(delta):
 	# Handlers for player mechanics and gravity mechanics
 	handle_controls(delta)
@@ -152,12 +155,14 @@ func use_skill():
 	if(is_bouncy && can_bounce):
 		is_bouncing = true
 		can_bounce = false
+		SignalBus.emit_signal("bounce_cooldown_start", $bounce_cooldown.wait_time)
 		$bounce_timer.start()
 		$bounce_cooldown.start()
 		print("Skill use Bounce")
 	elif(!is_bouncy && can_dash):
 		is_dashing = true
 		can_dash = false
+		SignalBus.emit_signal("dash_cooldown_start", $dash_cooldown.wait_time)
 		$dash_timer.start()
 		$dash_cooldown.start()
 		print("Skill use Zoom")
@@ -168,6 +173,7 @@ func switch_spirit():
 		can_dash = !can_dash
 		can_bounce = !can_bounce
 		can_swap_spirits = false
+		SignalBus.emit_signal("swap_cooldown_start", $spirit_swap_cooldown.wait_time)
 		$spirit_swap_cooldown.start()
 		print("Spirit Swap")
 		print(is_bouncy)
