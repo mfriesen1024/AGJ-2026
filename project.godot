@@ -12,7 +12,7 @@ config_version=5
 
 config/name="Atlantic Game Jam 2026"
 config/description="A game created for the 2026 edition of Atlantic Game Jam by GM4CF"
-run/main_scene="uid://dkru2osigfcfa"
+run/main_scene="uid://bevlbqdpcowqn"
 config/features=PackedStringArray("4.6", "Forward Plus")
 config/icon="res://icon.svg"
 

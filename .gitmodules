@@ -4,3 +4,6 @@
 [submodule "addons/Godot-Credits-Scene"]
 	path = addons/Godot-Credits-Scene
 	url = https://github.com/Stellar-Forge-Interactive/Godot-Credits-Scene.git
+[submodule "Assets/Env"]
+	path = Assets/Env
+	url = git@github.com:mfriesen1024/AGJ-2026-Env.git
