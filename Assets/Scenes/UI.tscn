@@ -1,0 +1,62 @@
+[gd_scene format=3 uid="uid://c04bugtuf40tb"]
+
+[ext_resource type="PackedScene" uid="uid://gvs63qkntam7" path="res://Assets/Scenes/CooldownUI.tscn" id="1_pmopw"]
+
+[node name="UI" type="Control" unique_id=2129833985]
+clip_contents = true
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Skill Swap" parent="." unique_id=1731829496 instance=ExtResource("1_pmopw")]
+layout_mode = 0
+anchors_preset = 0
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 851.0
+offset_top = 900.0
+offset_right = 1091.0
+offset_bottom = 1028.0
+grow_horizontal = 1
+grow_vertical = 1
+signalName = "swap_cooldown_start"
+labelName = "SWAP"
+
+[node name="Dash" parent="." unique_id=1990060381 instance=ExtResource("1_pmopw")]
+layout_mode = 0
+anchors_preset = 0
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 551.0
+offset_top = 900.0
+offset_right = 791.0
+offset_bottom = 1028.0
+grow_horizontal = 1
+grow_vertical = 1
+signalName = "dash_cooldown_start"
+fillRadial = false
+labelName = "DASH"
+
+[node name="Bounce" parent="." unique_id=1089331932 instance=ExtResource("1_pmopw")]
+layout_mode = 0
+anchors_preset = 0
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 1151.0
+offset_top = 900.0
+offset_right = 1391.0
+offset_bottom = 1028.0
+grow_horizontal = 1
+grow_vertical = 1
+signalName = "bounce_cooldown_start"
+fillRadial = false
+labelName = "BOUNCE"

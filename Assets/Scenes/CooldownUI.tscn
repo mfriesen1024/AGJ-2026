@@ -1,0 +1,121 @@
+[gd_scene format=3 uid="uid://gvs63qkntam7"]
+
+[ext_resource type="Script" uid="uid://jkvmu3hh1ysd" path="res://Assets/Scripts/cooldown_ui.gd" id="1_0ocpm"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pmopw"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0.30323282, 0.30323282, 0.30323282, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.8, 0.10980392, 0.8, 1)
+
+[sub_resource type="CanvasTexture" id="CanvasTexture_ly7ax"]
+
+[sub_resource type="Animation" id="Animation_ly7ax"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CooldownTimer:value")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [100.0]
+}
+
+[sub_resource type="Animation" id="Animation_pmopw"]
+resource_name = "SwapCooldownAnimation"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CooldownTimer:value")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [100.0, 0.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_fc8nf"]
+_data = {
+&"RESET": SubResource("Animation_ly7ax"),
+&"SwapCooldownAnimation": SubResource("Animation_pmopw")
+}
+
+[node name="Element" type="MarginContainer" unique_id=1731829496]
+custom_minimum_size = Vector2(128, 128)
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.9
+anchor_right = 0.5
+anchor_bottom = 0.9
+offset_left = -960.0
+offset_top = -972.0
+offset_right = -832.0
+offset_bottom = -844.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset_ratio = Vector2(0.5, 0.5)
+script = ExtResource("1_0ocpm")
+animationName = "SwapCooldownAnimation"
+fillRadial = true
+
+[node name="Box" type="Panel" parent="." unique_id=1050253943]
+custom_minimum_size = Vector2(240, 128)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_pmopw")
+
+[node name="CooldownTimer" type="TextureProgressBar" parent="Box" unique_id=745545633]
+clip_children = 2
+custom_minimum_size = Vector2(128, 128)
+layout_mode = 1
+anchors_preset = -1
+anchor_top = -0.001
+anchor_right = 1.0
+anchor_bottom = 0.9990001
+offset_left = 6.1035156e-05
+offset_top = 0.02802442
+offset_right = 6.1035156e-05
+offset_bottom = 0.028015137
+grow_horizontal = 2
+grow_vertical = 2
+value = 100.0
+fill_mode = 4
+nine_patch_stretch = true
+texture_progress = SubResource("CanvasTexture_ly7ax")
+tint_under = Color(1, 1, 1, 0)
+tint_over = Color(1, 1, 1, 0)
+tint_progress = Color(0, 0, 0, 0.5019608)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Box" unique_id=507151250]
+libraries/ = SubResource("AnimationLibrary_fc8nf")
+
+[node name="Label" type="Label" parent="Box" unique_id=1940317482]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -55.5
+offset_top = -27.5
+offset_right = 55.5
+offset_bottom = 27.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 40
+text = "SAMPLE"
+horizontal_alignment = 1
+vertical_alignment = 1
