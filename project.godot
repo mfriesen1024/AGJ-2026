@@ -23,9 +23,6 @@ buses/default_bus_layout="uid://du2hofyu7b3nk"
 [autoload]
 
 AppConfig="*uid://cjke6crjg14a0"
-SceneLoader="*uid://cbwmrnp0af35y"
-ProjectMusicController="*uid://r5t485lr3p7t"
-ProjectUISoundController="*uid://cc37235kj4384"
 SignalBus="*uid://cn2qbvov1g7qg"
 
 [display]
