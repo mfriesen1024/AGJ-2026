@@ -1,5 +1,8 @@
 [gd_scene format=3 uid="uid://bs7611heblixy"]
 
+[ext_resource type="PackedScene" uid="uid://dttc8rjmlr51m" path="res://Assets/Scenes/SceneSwitchTrigger.tscn" id="1_wkh8t"]
+[ext_resource type="PackedScene" uid="uid://t7xm1as21xxo" path="res://Assets/Scenes/MovingPlatform.tscn" id="2_wkh8t"]
+
 [sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_sbfc8"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_sbfc8"]
@@ -111,3 +114,9 @@ mesh = SubResource("BoxMesh_sbfc8")
 [node name="CollisionShape3D2" type="CollisionShape3D" parent="Slope" unique_id=677961103]
 transform = Transform3D(1.615, 0, 0, 0, 1.615, 0, 0, 0, 1.615, 0, -0.003252983, -0.05628431)
 shape = SubResource("BoxShape3D_sbfc8")
+
+[node name="Trigger" parent="." unique_id=1837876811 instance=ExtResource("1_wkh8t")]
+transform = Transform3D(2.835, 0, 0, 0, 2.835, 0, 0, 0, 2.835, 10.688764, 1.1291507, -4.4332724)
+
+[node name="Platform" parent="." unique_id=1149013980 instance=ExtResource("2_wkh8t")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14.409852, 0, 0)

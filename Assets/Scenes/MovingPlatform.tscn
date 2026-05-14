@@ -1,0 +1,21 @@
+[gd_scene format=3 uid="uid://t7xm1as21xxo"]
+
+[ext_resource type="Script" uid="uid://ns7p4goo1ekr" path="res://Assets/Scripts/PlatformMove.gd" id="1_3e7n0"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_wkh8t"]
+size = Vector3(2, 0.1, 2)
+
+[sub_resource type="BoxMesh" id="BoxMesh_urdf8"]
+size = Vector3(2, 0.1, 2)
+
+[node name="Platform" type="AnimatableBody3D" unique_id=1149013980]
+script = ExtResource("1_3e7n0")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=2084375133]
+shape = SubResource("BoxShape3D_wkh8t")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1560856304]
+mesh = SubResource("BoxMesh_urdf8")
+
+[node name="TargetPoint" type="Marker3D" parent="." unique_id=636014078]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.2352285, 0.8163497, 0)
