@@ -1,0 +1,5 @@
+[gd_scene format=3 uid="uid://cg6rdpt310ghl"]
+
+[ext_resource type="PackedScene" uid="uid://c877jgthwssvx" path="res://Assets/Textures/Texture_Test_2.glb" id="1_lyrl5"]
+
+[node name="Texture_Test_2" unique_id=1305674881 instance=ExtResource("1_lyrl5")]
