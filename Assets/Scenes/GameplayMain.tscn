@@ -4,8 +4,10 @@
 [ext_resource type="PackedScene" uid="uid://dgr4hikovt3tx" path="res://Assets/Scenes/player.tscn" id="2_q46om"]
 [ext_resource type="Script" uid="uid://dgojlwpun3qfy" path="res://Assets/Scripts/camera.gd" id="2_tyis1"]
 [ext_resource type="PackedScene" uid="uid://c04bugtuf40tb" path="res://Assets/Scenes/UI.tscn" id="4_tyis1"]
+[ext_resource type="PackedScene" uid="uid://bpeukpl4ql6qo" path="res://Assets/Scenes/PauseMenu.tscn" id="5_8axaq"]
 
 [node name="GameplayMain" type="Node" unique_id=189919240]
+process_mode = 3
 
 [node name="BaseLevel" parent="." unique_id=1734937534 instance=ExtResource("2_ms7gg")]
 
@@ -22,3 +24,6 @@ size = 10.0
 transform = Transform3D(0.70710677, 0, 0.70710677, 0, 1, 0, -0.70710677, 0, 0.70710677, 0.64349186, 1.7327207, -2.1565633)
 
 [node name="UI" parent="." unique_id=2129833985 instance=ExtResource("4_tyis1")]
+
+[node name="PauseMenu" parent="." unique_id=781937481 instance=ExtResource("5_8axaq")]
+visible = false
