@@ -1,11 +1,14 @@
 [gd_scene format=3 uid="uid://bs7611heblixy"]
 
+[ext_resource type="MeshLibrary" uid="uid://c2s447bspe3ba" path="res://Assets/Env/MeshLibraryTiles.tres" id="1_hr51i"]
+
 [sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_sbfc8"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_sbfc8"]
 albedo_color = Color(1, 0.7176471, 1, 1)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hr51i"]
+albedo_color = Color(0, 0, 0, 1)
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_wkh8t"]
 size = Vector2(100, 100)
@@ -22,6 +25,38 @@ size = Vector3(1.2595215, 2.4503174, 0.21911621)
 
 [node name="BaseLevel" type="Node3D" unique_id=1734937534]
 
+[node name="Blocks Grid" type="GridMap" parent="." unique_id=371188154]
+transform = Transform3D(0.70710677, 0, 0.70710677, 0, 1, 0, -0.70710677, 0, 0.70710677, 0, 1, 0)
+mesh_library = ExtResource("1_hr51i")
+cell_center_y = false
+data = {
+"cells": PackedInt32Array(0, 1, 327681, 2, 2, 655363, 3, 2, 1048581, 2, 1, 655365, 2, 0, 655365, 2, 65535, 655365, 2, 65534, 655365, 131071, 65532, 14, 131071, 65530, 12, 131070, 65530, 12, 131069, 65529, 12, 131069, 65530, 12, 131070, 65531, 12, 131071, 65531, 12, 2, 65533, 655368, 2, 65532, 655368, 2, 65531, 655368, 3, 65533, 655367, 3, 65532, 655367, 3, 65531, 655367, 4, 65533, 655369, 4, 65532, 655369, 4, 65531, 655369, 4, 2, 1048581, 2, 4, 5, 3, 4, 1441797, 4, 4, 655365, 5, 4, 1048581)
+}
+metadata/_editor_floor_ = Vector3(0, 0, 0)
+
+[node name="Lights" type="Node3D" parent="." unique_id=542319390]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Lights" unique_id=494716390]
+transform = Transform3D(0.43394023, -0.7970555, 0.41999814, 0.0040834052, 0.46791202, 0.8837657, -0.90093243, -0.38178638, 0.20630056, 12.211578, 7.276738, 3.8010488)
+shadow_enabled = true
+
+[node name="OmniLight3D" type="OmniLight3D" parent="Lights" unique_id=682291344]
+transform = Transform3D(-0.87908345, -0.47666794, 0, 0.47666794, -0.87908345, 0, 0, 0, 1, 2.262496, 7.528783, -5.7839065)
+visible = false
+light_energy = 14.941
+shadow_enabled = true
+omni_range = 11.87285
+
+[node name="SpotLight3D" type="SpotLight3D" parent="Lights" unique_id=203769531]
+transform = Transform3D(1, 0, 0, 0, -0.056152657, 0.99842227, 0, -0.99842227, -0.056152657, 7.162296, 10.90911, -0.8631047)
+light_color = Color(0.43606043, 0.9946328, 0.852685, 1)
+light_energy = 11.297
+light_indirect_energy = 0.842
+shadow_enabled = true
+spot_range = 13.532
+spot_angle = 15.15
+spot_angle_attenuation = 0.7578575
+
 [node name="Area3D" type="StaticBody3D" parent="." unique_id=2112230399]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.42232704, 0)
 
@@ -36,9 +71,6 @@ material_override = SubResource("StandardMaterial3D_sbfc8")
 material_overlay = SubResource("StandardMaterial3D_hr51i")
 mesh = SubResource("PlaneMesh_wkh8t")
 skin = SubResource("Skin_urdf8")
-
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=494716390]
-transform = Transform3D(0.023873536, -0.3476394, 0.93732435, 0.008851462, 0.9376283, 0.3475267, -0.9996758, 0, 0.02546162, 11.906227, 8.661773, 0)
 
 [node name="RigidBody3D" type="StaticBody3D" parent="." unique_id=15505122]
 transform = Transform3D(0.70710677, 0, 0.70710677, 0, 1, 0, -0.70710677, 0, 0.70710677, 0, 0, 0)
