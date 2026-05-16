@@ -4,6 +4,7 @@
 [ext_resource type="Script" uid="uid://cfglg02ao4bkg" path="res://Assets/Scripts/player.gd" id="1_7dd06"]
 [ext_resource type="Script" uid="uid://bd857hnkifln1" path="res://Assets/Scripts/player_shadow.gd" id="3_38rej"]
 [ext_resource type="Texture2D" uid="uid://cvx1uh45ct1ss" path="res://icon.svg" id="4_t1xgp"]
+[ext_resource type="AudioStream" uid="uid://chgwy2kl348ta" path="res://Assets/Sound/WalkCycle.wav" id="5_23lac"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_7dd06"]
 
@@ -35,7 +36,6 @@ size = Vector3(1, 0.39723206, 1)
 texture_albedo = ExtResource("4_t1xgp")
 upper_fade = 1e-05
 lower_fade = 1e-05
-cull_mask = 1048574
 
 [node name="ShadowRay" type="RayCast3D" parent="PlayerShadow" unique_id=1352420714]
 target_position = Vector3(0, 0, 0)
@@ -43,6 +43,13 @@ collision_mask = 15
 collide_with_areas = true
 debug_shape_custom_color = Color(0.30980393, 1, 0.18039216, 1)
 debug_shape_thickness = 5
+
+[node name="WalkingSound" type="AudioStreamPlayer3D" parent="." unique_id=881088200]
+stream = ExtResource("5_23lac")
+volume_db = -5.0
+max_db = -3.0
+autoplay = true
+bus = &"SFX"
 
 [connection signal="timeout" from="spirit_swap_cooldown" to="." method="_on_spirit_swap_cooldown_timeout"]
 [connection signal="timeout" from="dash_timer" to="." method="_on_dash_timer_timeout"]
