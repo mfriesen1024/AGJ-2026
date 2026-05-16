@@ -191,6 +191,7 @@ func switch_spirit():
 		can_bounce = !can_bounce
 		can_swap_spirits = false
 		SignalBus.emit_signal("swap_cooldown_start", $spirit_swap_cooldown.wait_time)
+		SignalBus.play("res://Assets/Sound/Droplet.wav")
 		$spirit_swap_cooldown.start()
 		print("Spirit Swap")
 		print(is_bouncy)
