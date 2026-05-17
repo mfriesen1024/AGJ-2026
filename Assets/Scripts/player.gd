@@ -24,6 +24,10 @@ var dashTargetDir: Vector3
 var can_dash: bool = false
 var is_dashing: bool = false
 
+func _ready() -> void:
+	SignalBus.emit_signal("changed_spirit", is_bouncy)
+
+
 #func _on_ready():
 	#PlayerVariables.skill_swap_path = spirit_swap_timer.get_path()
 
@@ -170,23 +174,22 @@ func use_skill():
 func switch_spirit():
 	if(can_swap_spirits):
 		is_bouncy = !is_bouncy
-		can_dash = !can_dash
-		can_bounce = !can_bounce
+		can_dash = !is_bouncy
+		can_bounce = is_bouncy
 		can_swap_spirits = false
 		SignalBus.emit_signal("swap_cooldown_start", $spirit_swap_cooldown.wait_time)
+		SignalBus.emit_signal("changed_spirit", is_bouncy)
 		$spirit_swap_cooldown.start()
 		print("Spirit Swap")
 		print(is_bouncy)
 
 
 func _on_bounce_timer_timeout() -> void:
-	print("timer stopped")
 	SignalBus.emit_signal("bounce_cooldown_start", $bounce_cooldown.wait_time)
 	$bounce_cooldown.start()
 	is_bouncing = false
 
 func _on_bounce_cooldown_timeout() -> void:
-	print("cooldown stopped")
 	can_bounce = true
 	
 func _on_dash_timer_timeout() -> void:
