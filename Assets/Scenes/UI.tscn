@@ -26,6 +26,7 @@ grow_horizontal = 1
 grow_vertical = 1
 signalName = "swap_cooldown_start"
 labelName = "SWAP"
+targetColour = Color(0, 0.8392157, 0, 1)
 
 [node name="Dash" parent="." unique_id=1990060381 instance=ExtResource("1_pmopw")]
 layout_mode = 0
@@ -43,6 +44,8 @@ grow_vertical = 1
 signalName = "dash_cooldown_start"
 fillRadial = false
 labelName = "DASH"
+targetColour = Color(0, 1.92523e-06, 0.88175815, 1)
+activeSignalName = "dash_timer_start"
 
 [node name="Bounce" parent="." unique_id=1089331932 instance=ExtResource("1_pmopw")]
 layout_mode = 0
@@ -60,3 +63,5 @@ grow_vertical = 1
 signalName = "bounce_cooldown_start"
 fillRadial = false
 labelName = "BOUNCE"
+targetColour = Color(0.029487016, 0.2666721, 0.99999994, 1)
+activeSignalName = "bounce_timer_start"

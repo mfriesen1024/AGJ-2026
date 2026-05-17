@@ -40,12 +40,16 @@ func _physics_process(delta):
 		if(!collision):
 			return
 		
-		velocity = movement_velocity.bounce(collision.get_normal())
+		velocity = velocity.bounce(collision.get_normal())
+		
 		movement_velocity = velocity
 		if(collision.get_normal().y != 0):
 			gravity = -gravity * 1.5
+	
 		print("collided")
 		is_bouncing = false
+		$bounce_timer.stop()
+		_on_bounce_timer_timeout()
 		return
 		
 	# if not bouncing, continue with regular sliding movement for ease of use
@@ -130,7 +134,7 @@ func handle_bouncy_movement(delta, input):
 	
 	if(input.length() <= 0 && movement_velocity.length() > 0): # decel, no input
 		movement_velocity = movement_velocity.lerp(Vector3.ZERO, delta * 1)
-		
+
 	else:  # accel
 		movement_velocity = BOUNCY_ACCEL * input
 
@@ -151,16 +155,16 @@ func use_skill():
 	if(is_bouncy && can_bounce):
 		is_bouncing = true
 		can_bounce = false
-		SignalBus.emit_signal("bounce_cooldown_start", $bounce_cooldown.wait_time)
+		SignalBus.emit_signal("bounce_timer_start", $bounce_timer.wait_time)
 		$bounce_timer.start()
-		$bounce_cooldown.start()
 		print("Skill use Bounce")
+		
 	elif(!is_bouncy && can_dash):
 		is_dashing = true
 		can_dash = false
-		SignalBus.emit_signal("dash_cooldown_start", $dash_cooldown.wait_time)
+		SignalBus.emit_signal("dash_timer_start", $dash_timer.wait_time)
 		$dash_timer.start()
-		$dash_cooldown.start()
+		
 		print("Skill use Zoom")
 	
 func switch_spirit():
@@ -174,17 +178,26 @@ func switch_spirit():
 		print("Spirit Swap")
 		print(is_bouncy)
 
-func _on_dash_timer_timeout() -> void:
-	is_dashing = false
 
 func _on_bounce_timer_timeout() -> void:
+	print("timer stopped")
+	SignalBus.emit_signal("bounce_cooldown_start", $bounce_cooldown.wait_time)
+	$bounce_cooldown.start()
 	is_bouncing = false
 
+func _on_bounce_cooldown_timeout() -> void:
+	print("cooldown stopped")
+	can_bounce = true
+	
+func _on_dash_timer_timeout() -> void:
+	SignalBus.emit_signal("dash_cooldown_start", $dash_cooldown.wait_time)
+	$dash_cooldown.start()
+	is_dashing = false
+
+	
 func _on_dash_cooldown_timeout() -> void:
 	can_dash = true
 
-func _on_bounce_cooldown_timeout() -> void:
-	can_bounce = true
 
 func _on_spirit_swap_cooldown_timeout() -> void:
 	can_swap_spirits = true
