@@ -1,17 +1,27 @@
 [gd_scene format=3 uid="uid://c04bugtuf40tb"]
 
+[ext_resource type="Script" uid="uid://c3vhlq5t1d6th" path="res://Assets/Scripts/playerUI.gd" id="1_fc8nf"]
 [ext_resource type="PackedScene" uid="uid://gvs63qkntam7" path="res://Assets/Scenes/CooldownUI.tscn" id="1_pmopw"]
 
 [node name="UI" type="Control" unique_id=2129833985]
 clip_contents = true
 layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
 anchor_bottom = 1.0
+offset_left = -960.0
+offset_top = -1080.0
+offset_right = 960.0
 grow_horizontal = 2
-grow_vertical = 2
+grow_vertical = 0
+script = ExtResource("1_fc8nf")
+bouncyUIColour = Color(0.32156864, 0.7372549, 0.44705883, 1)
+windyUIColour = Color(0.3137255, 0.68235296, 0.7254902, 1)
+inactiveAlpha = 0.5
 
-[node name="Skill Swap" parent="." unique_id=1731829496 instance=ExtResource("1_pmopw")]
+[node name="SkillSwap" parent="." unique_id=1731829496 instance=ExtResource("1_pmopw")]
 layout_mode = 0
 anchors_preset = 0
 anchor_left = 0.0
@@ -44,7 +54,7 @@ grow_vertical = 1
 signalName = "dash_cooldown_start"
 fillRadial = false
 labelName = "DASH"
-targetColour = Color(0, 1.92523e-06, 0.88175815, 1)
+targetColour = Color(0.3137255, 0.68235296, 0.7254902, 1)
 activeSignalName = "dash_timer_start"
 
 [node name="Bounce" parent="." unique_id=1089331932 instance=ExtResource("1_pmopw")]
@@ -63,5 +73,5 @@ grow_vertical = 1
 signalName = "bounce_cooldown_start"
 fillRadial = false
 labelName = "BOUNCE"
-targetColour = Color(0.029487016, 0.2666721, 0.99999994, 1)
+targetColour = Color(0.32156864, 0.7372549, 0.44705883, 1)
 activeSignalName = "bounce_timer_start"
