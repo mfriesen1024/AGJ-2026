@@ -49,7 +49,6 @@ func _physics_process(delta):
 		movement_velocity = velocity
 		if(collision.get_normal().y != 0):
 			gravity = -gravity * 1.5
-	
 		print("collided")
 		is_bouncing = false
 		$bounce_timer.stop()
@@ -138,7 +137,7 @@ func handle_bouncy_movement(delta, input):
 	
 	if(input.length() <= 0 && movement_velocity.length() > 0): # decel, no input
 		movement_velocity = movement_velocity.lerp(Vector3.ZERO, delta * 1)
-
+		
 	else:  # accel
 		movement_velocity = BOUNCY_ACCEL * input
 
@@ -161,21 +160,21 @@ func use_skill():
 		can_bounce = false
 		SignalBus.emit_signal("bounce_timer_start", $bounce_timer.wait_time)
 		$bounce_timer.start()
+		$bounce_cooldown.start()
 		print("Skill use Bounce")
-		
 	elif(!is_bouncy && can_dash):
 		is_dashing = true
 		can_dash = false
-		SignalBus.emit_signal("dash_timer_start", $dash_timer.wait_time)
+		SignalBus.emit_signal("dash_cooldown_start", $dash_cooldown.wait_time)
 		$dash_timer.start()
-		
+		$dash_cooldown.start()
 		print("Skill use Zoom")
 	
 func switch_spirit():
 	if(can_swap_spirits):
 		is_bouncy = !is_bouncy
-		can_dash = !is_bouncy
-		can_bounce = is_bouncy
+		can_dash = !can_dash
+		can_bounce = !can_bounce
 		can_swap_spirits = false
 		SignalBus.emit_signal("swap_cooldown_start", $spirit_swap_cooldown.wait_time)
 		SignalBus.emit_signal("changed_spirit", is_bouncy)
@@ -188,6 +187,9 @@ func _on_bounce_timer_timeout() -> void:
 	SignalBus.emit_signal("bounce_cooldown_start", $bounce_cooldown.wait_time)
 	$bounce_cooldown.start()
 	is_bouncing = false
+
+func _on_dash_cooldown_timeout() -> void:
+	can_dash = true
 
 func _on_bounce_cooldown_timeout() -> void:
 	can_bounce = true
