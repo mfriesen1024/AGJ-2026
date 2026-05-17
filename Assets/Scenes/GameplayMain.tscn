@@ -4,7 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://dgr4hikovt3tx" path="res://Assets/Scenes/player.tscn" id="2_q46om"]
 [ext_resource type="Script" uid="uid://dgojlwpun3qfy" path="res://Assets/Scripts/camera.gd" id="2_tyis1"]
 [ext_resource type="PackedScene" uid="uid://c04bugtuf40tb" path="res://Assets/Scenes/UI.tscn" id="4_tyis1"]
-[ext_resource type="AudioStream" uid="uid://cewm6o46hr68s" path="res://Assets/Sound/AGJ Main Level Theme WIP 3.wav" id="5_8axaq"]
+[ext_resource type="AudioStream" uid="uid://wti5ej7fmydi" path="res://Assets/Sound/AGJ Main Level Theme.wav" id="5_8axaq"]
 
 [node name="GameplayMain" type="Node" unique_id=189919240]
 
@@ -18,9 +18,11 @@ target = NodePath("../Player")
 [node name="Camera" type="Camera3D" parent="View" unique_id=452175451]
 projection = 1
 size = 10.0
+near = 6.54
+far = 500.0
 
 [node name="Player" parent="." unique_id=142444681 instance=ExtResource("2_q46om")]
-transform = Transform3D(0.70710677, 0, 0.70710677, 0, 1, 0, -0.70710677, 0, 0.70710677, -0.09547174, 1.5270325, 0.12460923)
+transform = Transform3D(0.70710677, 0, 0.70710677, 0, 1, 0, -0.70710677, 0, 0.70710677, -0.09547174, 3.1113672, 0.12460923)
 
 [node name="UI" parent="." unique_id=2129833985 instance=ExtResource("4_tyis1")]
 
