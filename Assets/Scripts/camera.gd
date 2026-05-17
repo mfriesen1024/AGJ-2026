@@ -12,4 +12,4 @@ func _physics_process(delta):
 	
 	self.position = self.position.lerp(target.position, delta * 10)
 	
-	camera.position = camera.position.lerp(Vector3(0, 0, 6), 10 * delta)
+	camera.position = camera.position.lerp(Vector3(0, 0, 30), 10 * delta)

@@ -26,6 +26,7 @@ wait_time = 0.1
 [node name="bounce_timer" type="Timer" parent="." unique_id=166941567]
 
 [node name="bounce_cooldown" type="Timer" parent="." unique_id=414171299]
+wait_time = 4.0
 
 [node name="PlayerShadow" type="Node3D" parent="." unique_id=1783877164]
 script = ExtResource("3_38rej")
