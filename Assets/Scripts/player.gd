@@ -173,8 +173,8 @@ func use_skill():
 func switch_spirit():
 	if(can_swap_spirits):
 		is_bouncy = !is_bouncy
-		can_dash = !is_bouncy
-		can_bounce = is_bouncy
+		can_dash = !can_dash
+		can_bounce = !can_bounce
 		can_swap_spirits = false
 		SignalBus.emit_signal("swap_cooldown_start", $spirit_swap_cooldown.wait_time)
 		SignalBus.emit_signal("changed_spirit", is_bouncy)
@@ -198,11 +198,6 @@ func _on_dash_timer_timeout() -> void:
 	SignalBus.emit_signal("dash_cooldown_start", $dash_cooldown.wait_time)
 	$dash_cooldown.start()
 	is_dashing = false
-
-	
-func _on_dash_cooldown_timeout() -> void:
-	can_dash = true
-
 
 func _on_spirit_swap_cooldown_timeout() -> void:
 	can_swap_spirits = true
