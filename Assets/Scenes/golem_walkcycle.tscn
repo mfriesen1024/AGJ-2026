@@ -1,0 +1,18 @@
+[gd_scene format=3 uid="uid://dllu4evl4x2ck"]
+
+[ext_resource type="PackedScene" uid="uid://clymg08yisv7h" path="res://Assets/Env/Models/Character/Golem_walkcycle.glb" id="1_sy1ft"]
+
+[node name="Golem_walkcycle" unique_id=1071510484 instance=ExtResource("1_sy1ft")]
+
+[node name="Skeleton3D" parent="Golem" parent_id_path=PackedInt32Array(1490152357) index="0" unique_id=1405483312]
+bones/1/position = Vector3(0, 1.7170099, -0.013128281)
+bones/3/rotation = Quaternion(0.904005, -0.0979088, -0.029897556, -0.41508418)
+bones/4/rotation = Quaternion(-0.07554069, 0.010277278, 0.17944501, 0.9808097)
+bones/6/rotation = Quaternion(0.88868356, -0.20001753, -0.06107766, -0.40804923)
+bones/7/rotation = Quaternion(-0.07679128, 2.298991e-07, -2.3652522e-10, 0.99704725)
+bones/11/rotation = Quaternion(0.09011221, -0.10815583, -0.633737, 0.7606311)
+bones/12/rotation = Quaternion(0.13062543, -0.004629577, -0.14431563, 0.98086125)
+bones/14/rotation = Quaternion(-0.11624403, -0.15345822, 0.62413555, 0.75722706)
+bones/15/rotation = Quaternion(0.12773232, 0.01688793, 0.11877648, 0.98452604)
+bones/16/position = Vector3(0.67786956, 0.54828674, -0.72761625)
+bones/19/position = Vector3(-0.6778691, 0.5482867, -0.7276168)

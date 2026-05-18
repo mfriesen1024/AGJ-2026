@@ -4,6 +4,7 @@ extends CharacterBody3D
 @export var movement_speed = 250
 @export var jump_strength = 10
 @onready var walking_sound = $WalkingSound
+@onready var animation_player = $Character/Golem_walkcycle/AnimationPlayer
 var rng = RandomNumberGenerator.new()
 var gravity = 0
 var movement_velocity: Vector3
@@ -85,13 +86,21 @@ func handle_controls(delta):
 	input.z = Input.get_axis("move_forward", "move_back")
 	
 	# Dash Direction
-	if Vector2(velocity.z, velocity.x).length() > 0:
+	var curr_vel = Vector2(velocity.z, velocity.x).length()
+	
+	if curr_vel > 0:
 		rotation_direction = Vector2(velocity.z, velocity.x).angle()
 	dashTargetDir = Vector3.BACK.rotated(Vector3.UP, rotation.y)
 	
-	
 	if input.length() > 1:
 		input = input.normalized()
+	
+	# Movement Animation
+	
+	if curr_vel > 0.2 && is_on_floor():
+		animation_player.play("Golem/WalkCycle")
+	else:
+		animation_player.play("Golem/Idle")
 
 	# Spirit mechanics
 	
@@ -138,6 +147,9 @@ func handle_effects(delta):
 			walking_sound.stream_paused = false
 			walking_sound.pitch_scale = rng.randf_range(0.8,1.1)
 			walking_sound.volume_db = -2 - (1/speed_factor)
+	if global_position.z < -140:
+		SignalBus.emit_signal("adjust_whiteout", global_position.z + 148)
+
 
 func jump():
 	gravity = -jump_strength

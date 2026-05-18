@@ -6,6 +6,7 @@ signal active_spirit(val)
 signal swap_cooldown_start(val)
 signal dash_cooldown_start(val)
 signal bounce_cooldown_start(val)
+signal adjust_whiteout(val)
 
 var num_streams = 8
 var bus = "sfx"
