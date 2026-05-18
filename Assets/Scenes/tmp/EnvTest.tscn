@@ -20,6 +20,7 @@
 [ext_resource type="PackedScene" uid="uid://dft0e0do6trl4" path="res://Assets/Env/Scenes/Props/Tulip1.tscn" id="13_6sb0d"]
 [ext_resource type="PackedScene" uid="uid://f7umkcx0yttb" path="res://Assets/Env/Models/Props/Tulip3.glb" id="18_nkgmd"]
 [ext_resource type="PackedScene" uid="uid://bcycjf0mw04ck" path="res://Assets/Env/Models/Props/Tulip1.glb" id="19_xxget"]
+[ext_resource type="PackedScene" uid="uid://chnsyvde2loun" path="res://Assets/Env/Scenes/Props/Crystals1.tscn" id="21_2hskp"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dxhly"]
 emission_enabled = true
@@ -219,3 +220,6 @@ directional = true
 
 [node name="Camera3D" type="Camera3D" parent="." unique_id=1427580867]
 transform = Transform3D(-3.090862e-08, 0.7071068, -0.7071068, 3.090862e-08, 0.7071068, 0.7071068, 1, 0, -4.3711392e-08, 0, 7.5, 0)
+
+[node name="Crystals1" parent="." unique_id=1887905488 instance=ExtResource("21_2hskp")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.5, 3, 0)
