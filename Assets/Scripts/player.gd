@@ -3,10 +3,14 @@ extends CharacterBody3D
 # General variables
 @export var movement_speed = 250
 @export var jump_strength = 10
+@onready var walking_sound = $WalkingSound
+@onready var animation_player = $Character/Golem_walkcycle/AnimationPlayer
+var rng = RandomNumberGenerator.new()
 var gravity = 0
 var movement_velocity: Vector3
 var rotation_direction: float
 var can_jump: bool = true
+var previously_floored: bool = true
 var can_swap_spirits: bool = true
 
 # Bouncy variables
@@ -35,6 +39,7 @@ func _physics_process(delta):
 	# Handlers for player mechanics and gravity mechanics
 	handle_controls(delta)
 	handle_gravity(delta)
+	handle_effects(delta)
 
 	# Specific interactions while Bouncy spirit skill is active
 	
@@ -50,6 +55,7 @@ func _physics_process(delta):
 		if(collision.get_normal().y != 0):
 			gravity = -gravity * 1.5
 		print("collided")
+		SignalBus.play("res://Assets/Sound/Bounce.ogg")
 		is_bouncing = false
 		$bounce_timer.stop()
 		_on_bounce_timer_timeout()
@@ -71,6 +77,11 @@ func _physics_process(delta):
 	velocity = applied_velocity
 
 	move_and_slide()
+	
+	if is_on_floor() and gravity > 2 and !previously_floored:
+		SignalBus.play("res://Assets/Sound/LandPixel.wav")
+
+	previously_floored = is_on_floor()
 
 func handle_controls(delta):
 	
@@ -82,13 +93,21 @@ func handle_controls(delta):
 	input.z = Input.get_axis("move_forward", "move_back")
 	
 	# Dash Direction
-	if Vector2(velocity.z, velocity.x).length() > 0:
+	var curr_vel = Vector2(velocity.z, velocity.x).length()
+	
+	if curr_vel > 0:
 		rotation_direction = Vector2(velocity.z, velocity.x).angle()
 	dashTargetDir = Vector3.BACK.rotated(Vector3.UP, rotation.y)
 	
-	
 	if input.length() > 1:
 		input = input.normalized()
+	
+	# Movement Animation
+	
+	if curr_vel > 0.2 && is_on_floor():
+		animation_player.play("Golem/WalkCycle")
+	else:
+		animation_player.play("Golem/Idle")
 
 	# Spirit mechanics
 	
@@ -110,6 +129,7 @@ func handle_controls(delta):
 	if Input.is_action_just_pressed("jump"):
 		if can_jump:
 			jump()
+			SignalBus.play("res://Assets/Sound/JumpPixel.ogg")
 	
 
 func handle_gravity(delta):
@@ -125,6 +145,18 @@ func handle_gravity(delta):
 		is_bouncing = false
 		gravity = 0
 
+func handle_effects(delta):
+	walking_sound.stream_paused = true
+	if is_on_floor():
+		var horizontal_velocity = Vector2(velocity.x, velocity.z)
+		var speed_factor = horizontal_velocity.length() / movement_speed / delta
+		if speed_factor > 0.1: # Likely can tweak this value
+			walking_sound.stream_paused = false
+			walking_sound.pitch_scale = rng.randf_range(0.8,1.1)
+			walking_sound.volume_db = -2 - (1/speed_factor)
+	if global_position.z < -140:
+		SignalBus.emit_signal("adjust_whiteout", global_position.z + 148)
+
 func jump():
 	gravity = -jump_strength
 
@@ -137,7 +169,6 @@ func handle_bouncy_movement(delta, input):
 	
 	if(input.length() <= 0 && movement_velocity.length() > 0): # decel, no input
 		movement_velocity = movement_velocity.lerp(Vector3.ZERO, delta * 1)
-		
 	else:  # accel
 		movement_velocity = BOUNCY_ACCEL * input
 
@@ -166,6 +197,7 @@ func use_skill():
 		is_dashing = true
 		can_dash = false
 		SignalBus.emit_signal("dash_cooldown_start", $dash_cooldown.wait_time)
+		SignalBus.play("res://Assets/Sound/Dash.wav")
 		$dash_timer.start()
 		$dash_cooldown.start()
 		print("Skill use Zoom")
@@ -178,6 +210,7 @@ func switch_spirit():
 		can_swap_spirits = false
 		SignalBus.emit_signal("swap_cooldown_start", $spirit_swap_cooldown.wait_time)
 		SignalBus.emit_signal("changed_spirit", is_bouncy)
+		SignalBus.play("res://Assets/Sound/Droplet.wav")
 		$spirit_swap_cooldown.start()
 		print("Spirit Swap")
 		print(is_bouncy)

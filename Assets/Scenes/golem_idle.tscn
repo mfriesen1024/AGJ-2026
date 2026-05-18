@@ -1,0 +1,14 @@
+[gd_scene format=3 uid="uid://sug4sqr1fcd2"]
+
+[ext_resource type="PackedScene" uid="uid://f4s1bp7vjkrk" path="res://Assets/Env/Models/Character/Golem_Idle.glb" id="1_u5v1g"]
+
+[node name="Golem_Idle" unique_id=1397251200 instance=ExtResource("1_u5v1g")]
+
+[node name="Skeleton3D" parent="Golem" parent_id_path=PackedInt32Array(316461896) index="0" unique_id=1928928139]
+bones/3/rotation = Quaternion(0.90877956, -1.3580038e-07, -3.6386975e-08, -0.4172766)
+bones/6/rotation = Quaternion(0.90877956, 1.4078529e-07, 3.409814e-08, -0.4172765)
+bones/10/rotation = Quaternion(5.7601167e-08, -1.1098626e-07, -0.7071068, 0.7071068)
+bones/13/rotation = Quaternion(-1.1098625e-07, -5.7601167e-08, 0.7071068, 0.7071068)
+bones/16/position = Vector3(0.67786956, 0.54828674, -0.7276163)
+bones/19/position = Vector3(-0.67786914, 0.5482867, -0.72761685)
+bones/20/rotation = Quaternion(0.084474385, -0.0008928587, -0.023543334, 0.9961471)

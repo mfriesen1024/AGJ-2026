@@ -4,8 +4,10 @@
 [ext_resource type="Script" uid="uid://cfglg02ao4bkg" path="res://Assets/Scripts/player.gd" id="1_7dd06"]
 [ext_resource type="Script" uid="uid://bd857hnkifln1" path="res://Assets/Scripts/player_shadow.gd" id="3_38rej"]
 [ext_resource type="Texture2D" uid="uid://cvx1uh45ct1ss" path="res://icon.svg" id="4_t1xgp"]
+[ext_resource type="AudioStream" uid="uid://chgwy2kl348ta" path="res://Assets/Sound/WalkCycle.wav" id="5_23lac"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_7dd06"]
+height = 2.165039
 
 [node name="Player" type="CharacterBody3D" unique_id=142444681 groups=["player"]]
 script = ExtResource("1_7dd06")
@@ -14,6 +16,7 @@ script = ExtResource("1_7dd06")
 shape = SubResource("CapsuleShape3D_7dd06")
 
 [node name="Character" parent="." unique_id=1931309072 instance=ExtResource("1_6cd4h")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
 
 [node name="spirit_swap_cooldown" type="Timer" parent="." unique_id=1632662656]
 one_shot = true
@@ -30,17 +33,19 @@ one_shot = true
 
 [node name="bounce_cooldown" type="Timer" parent="." unique_id=414171299]
 one_shot = true
+wait_time = 4.0
 
 [node name="PlayerShadow" type="Node3D" parent="." unique_id=1783877164]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
 script = ExtResource("3_38rej")
 
 [node name="Shadow" type="Decal" parent="PlayerShadow" unique_id=908759748]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.1490502, 0)
-size = Vector3(1, 0.39723206, 1)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.3, 0)
+layers = 3
+size = Vector3(1, 0.31874084, 1)
 texture_albedo = ExtResource("4_t1xgp")
-upper_fade = 1e-05
+upper_fade = 18.900896
 lower_fade = 1e-05
-cull_mask = 1048574
 
 [node name="ShadowRay" type="RayCast3D" parent="PlayerShadow" unique_id=1352420714]
 target_position = Vector3(0, 0, 0)
@@ -48,6 +53,13 @@ collision_mask = 15
 collide_with_areas = true
 debug_shape_custom_color = Color(0.30980393, 1, 0.18039216, 1)
 debug_shape_thickness = 5
+
+[node name="WalkingSound" type="AudioStreamPlayer3D" parent="." unique_id=881088200]
+stream = ExtResource("5_23lac")
+volume_db = -5.0
+max_db = -3.0
+autoplay = true
+bus = &"SFX"
 
 [connection signal="timeout" from="spirit_swap_cooldown" to="." method="_on_spirit_swap_cooldown_timeout"]
 [connection signal="timeout" from="dash_timer" to="." method="_on_dash_timer_timeout"]
