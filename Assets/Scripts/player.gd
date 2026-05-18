@@ -150,7 +150,6 @@ func handle_effects(delta):
 	if global_position.z < -140:
 		SignalBus.emit_signal("adjust_whiteout", global_position.z + 148)
 
-
 func jump():
 	gravity = -jump_strength
 
