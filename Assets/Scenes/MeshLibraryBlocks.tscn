@@ -1,4 +1,4 @@
-[gd_scene format=4 uid="uid://bla4pn5dn87lx"]
+[gd_scene format=4 uid="uid://cb7kxvivc8i8a"]
 
 [ext_resource type="Texture2D" uid="uid://psx58v641cey" path="res://Assets/Env/Models/Tiles/GroundTransitionGrassICorner_TransitionGradientGrassICorner.webp" id="1_nq0bb"]
 [ext_resource type="Texture2D" uid="uid://dw80v8lcvwubg" path="res://Assets/Env/Models/Tiles/GroundTransitionGrassOCorner_TransitionGradientGrassOCorner.webp" id="2_r5xd7"]

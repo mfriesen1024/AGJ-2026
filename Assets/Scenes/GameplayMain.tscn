@@ -4,8 +4,8 @@
 [ext_resource type="PackedScene" uid="uid://dgr4hikovt3tx" path="res://Assets/Scenes/player.tscn" id="2_q46om"]
 [ext_resource type="Script" uid="uid://dgojlwpun3qfy" path="res://Assets/Scripts/camera.gd" id="2_tyis1"]
 [ext_resource type="PackedScene" uid="uid://c04bugtuf40tb" path="res://Assets/Scenes/UI.tscn" id="4_tyis1"]
-[ext_resource type="PackedScene" uid="uid://bpeukpl4ql6qo" path="res://Assets/Scenes/PauseMenu.tscn" id="5_8axaq"]
 [ext_resource type="AudioStream" uid="uid://wti5ej7fmydi" path="res://Assets/Sound/AGJ Main Level Theme.wav" id="5_8axaq"]
+[ext_resource type="PackedScene" uid="uid://bpeukpl4ql6qo" path="res://Assets/Scenes/PauseMenu.tscn" id="5_134jv"]
 
 [node name="GameplayMain" type="Node" unique_id=189919240]
 
@@ -24,11 +24,12 @@ near = 6.54
 far = 500.0
 
 [node name="Player" parent="." unique_id=142444681 instance=ExtResource("2_q46om")]
-transform = Transform3D(0.70710677, 0, 0.70710677, 0, 1, 0, -0.70710677, 0, 0.70710677, -8.55176, 39.33799, -140.0796)
+transform = Transform3D(0.70710677, 0, 0.70710677, 0, 1, 0, -0.70710677, 0, 0.70710677, -4.5993357, 2.810066, -0.34556293)
 
 [node name="UI" parent="." unique_id=2129833985 instance=ExtResource("4_tyis1")]
+visibility_layer = 1
 
-[node name="PauseMenu" parent="." unique_id=781937481 instance=ExtResource("5_8axaq")]
+[node name="PauseMenu" parent="." unique_id=781937481 instance=ExtResource("5_134jv")]
 visible = false
 
 [node name="BGM" type="AudioStreamPlayer" parent="." unique_id=104259194]

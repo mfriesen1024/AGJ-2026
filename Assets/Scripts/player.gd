@@ -4,7 +4,7 @@ extends CharacterBody3D
 @export var movement_speed = 250
 @export var jump_strength = 10
 @onready var walking_sound = $WalkingSound
-@onready var animation_player = $Character/Golem_walkcycle/AnimationPlayer
+@onready var animation_player = $Character/Golem_MasterFile/AnimationPlayer
 var rng = RandomNumberGenerator.new()
 var gravity = 0
 var movement_velocity: Vector3
@@ -53,8 +53,7 @@ func _physics_process(delta):
 		
 		movement_velocity = velocity
 		if(collision.get_normal().y != 0):
-			gravity = -gravity * 1.5
-		print("collided")
+			gravity = -gravity * 1.5	
 		SignalBus.play("res://Assets/Sound/Bounce.ogg")
 		is_bouncing = false
 		$bounce_timer.stop()
@@ -102,12 +101,16 @@ func handle_controls(delta):
 	if input.length() > 1:
 		input = input.normalized()
 	
-	# Movement Animation
+	# Movement Animations
 	
-	if curr_vel > 0.2 && is_on_floor():
-		animation_player.play("Golem/WalkCycle")
-	else:
-		animation_player.play("Golem/Idle")
+	if is_dashing:
+		animation_player.play("Dash", -1, 0.5)
+	elif is_on_floor() && !previously_floored:
+		animation_player.play("Landing")
+	elif curr_vel > 0.2 && is_on_floor():
+		animation_player.play("WalkCycle")
+	elif is_on_floor():
+		animation_player.play("Idle")
 
 	# Spirit mechanics
 	
@@ -129,6 +132,7 @@ func handle_controls(delta):
 	if Input.is_action_just_pressed("jump"):
 		if can_jump:
 			jump()
+			animation_player.play("Jump")
 			SignalBus.play("res://Assets/Sound/JumpPixel.ogg")
 	
 
@@ -191,22 +195,20 @@ func use_skill():
 		can_bounce = false
 		SignalBus.emit_signal("bounce_timer_start", $bounce_timer.wait_time)
 		$bounce_timer.start()
-		$bounce_cooldown.start()
 		print("Skill use Bounce")
 	elif(!is_bouncy && can_dash):
 		is_dashing = true
 		can_dash = false
-		SignalBus.emit_signal("dash_cooldown_start", $dash_cooldown.wait_time)
+		SignalBus.emit_signal("dash_timer_start", $dash_cooldown.wait_time)
 		SignalBus.play("res://Assets/Sound/Dash.wav")
 		$dash_timer.start()
-		$dash_cooldown.start()
 		print("Skill use Zoom")
 	
 func switch_spirit():
 	if(can_swap_spirits):
 		is_bouncy = !is_bouncy
-		can_dash = !can_dash
-		can_bounce = !can_bounce
+		can_dash = !is_bouncy
+		can_bounce = is_bouncy
 		can_swap_spirits = false
 		SignalBus.emit_signal("swap_cooldown_start", $spirit_swap_cooldown.wait_time)
 		SignalBus.emit_signal("changed_spirit", is_bouncy)
@@ -221,16 +223,16 @@ func _on_bounce_timer_timeout() -> void:
 	$bounce_cooldown.start()
 	is_bouncing = false
 
+func _on_dash_timer_timeout() -> void:
+	SignalBus.emit_signal("dash_cooldown_start", $dash_cooldown.wait_time)
+	$dash_cooldown.start()
+	is_dashing = false
+
 func _on_dash_cooldown_timeout() -> void:
 	can_dash = true
 
 func _on_bounce_cooldown_timeout() -> void:
 	can_bounce = true
-	
-func _on_dash_timer_timeout() -> void:
-	SignalBus.emit_signal("dash_cooldown_start", $dash_cooldown.wait_time)
-	$dash_cooldown.start()
-	is_dashing = false
 
 func _on_spirit_swap_cooldown_timeout() -> void:
 	can_swap_spirits = true

@@ -4,6 +4,8 @@
 [ext_resource type="PackedScene" uid="uid://gvs63qkntam7" path="res://Assets/Scenes/CooldownUI.tscn" id="1_pmopw"]
 
 [node name="UI" type="Control" unique_id=2129833985]
+light_mask = 3
+visibility_layer = 2
 clip_contents = true
 layout_mode = 3
 anchors_preset = 7
@@ -17,6 +19,9 @@ offset_right = 960.0
 grow_horizontal = 2
 grow_vertical = 0
 script = ExtResource("1_fc8nf")
+dashActiveSignalName = "dash_timer_start"
+bounceActiveSignalName = "bounce_timer_start"
+swapSignalName = "swap_cooldown_start"
 bouncyUIColour = Color(0.32156864, 0.7372549, 0.44705883, 1)
 windyUIColour = Color(0.3137255, 0.68235296, 0.7254902, 1)
 inactiveAlpha = 0.5

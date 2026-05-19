@@ -2,6 +2,8 @@
 
 [ext_resource type="Script" uid="uid://bdet8115mn02d" path="res://addons/temp-menu/src/menu/main_menu.gd" id="1_rp3pw"]
 [ext_resource type="Script" uid="uid://bomkpwffkc8fn" path="res://addons/temp-menu/src/util/UIFocusHelper.gd" id="2_rp3pw"]
+[ext_resource type="AudioStream" uid="uid://wti5ej7fmydi" path="res://Assets/Sound/AGJ Main Level Theme.wav" id="2_x2xdw"]
+[ext_resource type="Texture2D" uid="uid://cec23d521xvwn" path="res://Assets/Env/Materials/GolemSpiritEditionLogo.png" id="4_s8fh6"]
 
 [sub_resource type="GDScript" id="GDScript_7ww3w"]
 resource_name = "SoundController"
@@ -292,8 +294,9 @@ script = ExtResource("1_rp3pw")
 [node name="UISoundController" type="Node" parent="." unique_id=1619985599]
 script = SubResource("GDScript_7ww3w")
 
-[node name="BackgroundMusicPlayer" type="AudioStreamPlayer" parent="." unique_id=1141822549]
-process_mode = 3
+[node name="BGM" type="AudioStreamPlayer" parent="." unique_id=1337448904]
+stream = ExtResource("2_x2xdw")
+volume_db = -16.0
 autoplay = true
 
 [node name="BackgroundTextureRect" type="TextureRect" parent="." unique_id=1940176448]
@@ -312,10 +315,15 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = -2.0
+offset_top = 167.0
+offset_right = -2.0
+offset_bottom = 167.0
 grow_horizontal = 2
 grow_vertical = 2
 
 [node name="TitleMargin" type="MarginContainer" parent="MenuContainer" unique_id=2112060331]
+visible = false
 layout_mode = 2
 theme_override_constants/margin_top = 24
 
@@ -336,6 +344,7 @@ vertical_alignment = 1
 script = SubResource("GDScript_bd0g4")
 
 [node name="SubTitleMargin" type="MarginContainer" parent="MenuContainer" unique_id=1510335937]
+visible = false
 layout_mode = 2
 theme_override_constants/margin_top = 92
 
@@ -432,7 +441,7 @@ offset_left = -88.0
 offset_top = -26.0
 grow_horizontal = 0
 grow_vertical = 0
-text = "v0.0.0"
+text = "v0.0.1"
 horizontal_alignment = 2
 script = SubResource("GDScript_uae7o")
 
@@ -528,6 +537,11 @@ text = "Cancel"
 unique_name_in_owner = true
 layout_mode = 2
 text = "Confirm"
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1853256322]
+position = Vector2(960, 410)
+scale = Vector2(0.47333333, 0.47333333)
+texture = ExtResource("4_s8fh6")
 
 [connection signal="pressed" from="MenuContainer/MenuButtonsMargin/MenuButtonsContainer/MenuButtonsBoxContainer/NewGameButton" to="." method="_on_new_game_button_pressed"]
 [connection signal="pressed" from="MenuContainer/MenuButtonsMargin/MenuButtonsContainer/MenuButtonsBoxContainer/OptionsButton" to="." method="_on_options_button_pressed"]

@@ -46,7 +46,6 @@ func pause_game_toggle() -> void:
 	else:
 		hide()
 		get_tree().paused = false
-	print("Print should be different now")
 	print(get_tree().paused)
 
 func try_exit_game() -> void:
@@ -85,7 +84,7 @@ func _event_is_mouse_button_released(event : InputEvent) -> bool:
 	return event is InputEventMouseButton and not event.is_pressed()
 
 func _input(event : InputEvent) -> void:
-	if event.is_action_released("ui_cancel"):
+		if event.is_action_released("ui_cancel"):
 		if sub_menu:
 			_close_sub_menu()
 		else:

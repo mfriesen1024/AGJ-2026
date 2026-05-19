@@ -292,6 +292,7 @@ grow_vertical = 2
 script = ExtResource("1_t8qcj")
 main_menu_scene_path = "uid://bevlbqdpcowqn"
 options_packed_scene = ExtResource("2_ietsh")
+confirm_exit = null
 
 [node name="UISoundController" type="Node" parent="." unique_id=1619985599]
 script = SubResource("GDScript_7ww3w")
